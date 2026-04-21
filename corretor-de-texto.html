@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Corretor de Tom — AMORC-GLP Facilities</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=DM+Mono&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f5f4f0;
+      --surface: #ffffff;
+      --border: #e0ddd6;
+      --text: #1a1916;
+      --muted: #7a7870;
+      --accent: #2a5caa;
+      --accent-light: #e8eef8;
+      --accent-text: #1a3d7a;
+      --success: #2d7a4f;
+      --success-light: #e8f5ee;
+      --radius: 10px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.07), 0 4px 12px rgba(0,0,0,0.04);
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 2rem 1rem 4rem;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 620px;
+    }
+
+    header {
+      margin-bottom: 2rem;
+    }
+
+    header h1 {
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--text);
+      letter-spacing: -0.3px;
+    }
+
+    header p {
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+    }
+
+    .field-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 8px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      resize: vertical;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      color: var(--text);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      line-height: 1.65;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    textarea:focus { border-color: var(--accent); }
+    textarea::placeholder { color: var(--muted); }
+
+    .tons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 1rem 0 1.25rem;
+    }
+
+    .ton {
+      padding: 5px 13px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      font-size: 13px;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      background: var(--surface);
+      color: var(--text);
+      transition: all 0.15s;
+    }
+
+    .ton:hover { border-color: var(--accent); color: var(--accent); }
+
+    .ton.ativo {
+      background: var(--accent-light);
+      color: var(--accent-text);
+      border-color: var(--accent);
+      font-weight: 500;
+    }
+
+    .row-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 8px 18px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      cursor: pointer;
+      background: var(--surface);
+      color: var(--text);
+      transition: all 0.15s;
+    }
+
+    .btn:hover { background: var(--bg); }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      font-weight: 500;
+    }
+
+    .btn-primary:hover { background: #1e4d99; border-color: #1e4d99; }
+    .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    .status-msg {
+      font-size: 13px;
+      color: var(--muted);
+      min-height: 20px;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 1.5rem 0;
+    }
+
+    .resultado-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--text);
+      white-space: pre-wrap;
+      min-height: 60px;
+    }
+
+    .resultado-acoes {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .copiado {
+      font-size: 13px;
+      color: var(--success);
+      background: var(--success-light);
+      padding: 4px 10px;
+      border-radius: 6px;
+      display: none;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 480px) {
+      .container { padding: 0; }
+      .card { border-radius: 8px; padding: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Corretor de tom de escrita</h1>
+      <p>Cole o texto, escolha o tom e receba a versão revisada.</p>
+    </header>
+
+    <div class="card">
+      <p class="field-label">Texto original</p>
+      <textarea id="entrada" placeholder="Ex: oi pessoal, reunião amanhã as 9 lembrem de trazer as notas tá"></textarea>
+
+      <p class="field-label" style="margin-top: 1.25rem;">Tom</p>
+      <div class="tons" id="tons">
+        <button class="ton ativo" data-tom="profissional formal">Formal</button>
+        <button class="ton" data-tom="profissional acessível">Profissional acessível</button>
+        <button class="ton" data-tom="WhatsApp corporativo">WhatsApp corporativo</button>
+        <button class="ton" data-tom="Teams ou e-mail interno">Teams / e-mail interno</button>
+        <button class="ton" data-tom="direto e objetivo">Direto e objetivo</button>
+      </div>
+
+      <div class="row-actions">
+        <button class="btn btn-primary" id="btnCorrigir" onclick="corrigir()">Corrigir texto</button>
+        <span class="status-msg" id="status"></span>
+      </div>
+
+      <div id="resultado" style="display:none;">
+        <div class="divider"></div>
+        <p class="field-label">Texto corrigido</p>
+        <div class="resultado-box" id="textoSaida"></div>
+        <div class="resultado-acoes">
+          <button class="btn" onclick="copiar()">Copiar</button>
+          <button class="btn" onclick="limpar()">Novo texto</button>
+          <span class="copiado" id="copiado">Copiado!</span>
+        </div>
+      </div>
+    </div>
+
+    <footer>Facilities · AMORC-GLP</footer>
+  </div>
+
+  <script>
+    let tomSelecionado = "profissional formal";
+
+    document.querySelectorAll(".ton").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".ton").forEach(b => b.classList.remove("ativo"));
+        btn.classList.add("ativo");
+        tomSelecionado = btn.dataset.tom;
+      });
+    });
+
+    async function corrigir() {
+      const texto = document.getElementById("entrada").value.trim();
+      if (!texto) { document.getElementById("status").textContent = "Cole um texto antes."; return; }
+
+      const btn = document.getElementById("btnCorrigir");
+      const status = document.getElementById("status");
+      btn.disabled = true;
+      btn.textContent = "Corrigindo...";
+      status.textContent = "";
+      document.getElementById("resultado").style.display = "none";
+
+      try {
+        const resp = await fetch("https://api.anthropic.com/v1/messages", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": API_KEY,
+            "anthropic-version": "2023-06-01",
+            "anthropic-dangerous-direct-browser-calls": "true"
+          },
+          body: JSON.stringify({
+            model: "claude-haiku-4-5-20251001",
+            max_tokens: 1000,
+            messages: [{
+              role: "user",
+              content: `Você é um assistente especializado em reescrita de textos corporativos em português brasileiro.
+
+Tom solicitado: ${tomSelecionado}
+
+Reescreva o texto abaixo nesse tom. Corrija ortografia, gramática, pontuação e adeque a linguagem ao contexto. Mantenha o sentido original. Retorne APENAS o texto corrigido, sem explicações, sem aspas, sem prefácio.
+
+Texto original:
+${texto}`
+            }]
+          })
+        });
+
+        const data = await resp.json();
+        const saida = data.content?.[0]?.text || "";
+        document.getElementById("textoSaida").textContent = saida;
+        document.getElementById("resultado").style.display = "block";
+      } catch (e) {
+        status.textContent = "Erro ao conectar. Verifique a chave de API.";
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Corrigir texto";
+      }
+    }
+
+    function copiar() {
+      const t = document.getElementById("textoSaida").textContent;
+      navigator.clipboard.writeText(t).then(() => {
+        const el = document.getElementById("copiado");
+        el.style.display = "inline";
+        setTimeout(() => el.style.display = "none", 2000);
+      });
+    }
+
+    function limpar() {
+      document.getElementById("entrada").value = "";
+      document.getElementById("resultado").style.display = "none";
+      document.getElementById("status").textContent = "";
+    }
+  </script>
+</body>
+</html>
